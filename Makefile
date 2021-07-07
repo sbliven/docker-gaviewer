@@ -1,11 +1,11 @@
 # Docker organization to pull the images from
-ORG = thewtex
+ORG = blivens
 
 # Name of image
-IMAGE = opengl
+IMAGE = gaviewer
 
 # Docker TAG
-TAG = debian
+TAG = latest
 
 build:
 	docker build \
@@ -16,11 +16,7 @@ build:
 		--build-arg BUILD_DATE=`date -u +"%Y-%m-%dT%H:%M:%SZ"` \
 		.
 
-example:
-	docker build \
-		-t $(ORG)/$(IMAGE)-example:$(TAG) example/
-
 push:
 	docker push $(ORG)/$(IMAGE):$(TAG)
 
-.PHONY: build example push
+.PHONY: build push

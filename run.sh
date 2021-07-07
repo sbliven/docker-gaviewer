@@ -1,17 +1,18 @@
 #!/bin/bash
 
-container=opengl
-image=thewtex/opengl
+container=gaviewer
+image=blivens/gaviewer
 port=6080
 extra_run_args=""
 quiet=""
+verbose=""
 
 show_help() {
 cat << EOF
 Usage: ${0##*/} [-h] [-q] [-c CONTAINER] [-i IMAGE] [-p PORT] [-r DOCKER_RUN_FLAGS]
 
 This script is a convenience script to run Docker images based on
-thewtex/opengl. It:
+blivens/gaviewer. It:
 
 - Makes sure docker is available
 - On Windows and Mac OSX, creates a docker machine if required
@@ -28,9 +29,9 @@ Options:
   -i             Image name (default ${image}).
   -p             Port to expose HTTP server (default ${port}). If an empty
                  string, the port is not exposed.
-  -r             Extra arguments to pass to 'docker run'. E.g.
-                 --env="APP=glxgears"
+  -r             Extra arguments to pass to 'docker run'.
   -q             Do not output informational messages.
+  -v             Print additional debugging messages
 EOF
 }
 
@@ -59,6 +60,9 @@ while [ $# -gt 0 ]; do
 		-q)
 			quiet=1
 			;;
+		-v)
+			verbose=1
+			;;
 		*)
 			show_help >&2
 			exit 1
@@ -75,7 +79,7 @@ if [ $? -ne 0 ]; then
 fi
 
 os=$(uname)
-if [ "${os}" != "Linux" ]; then
+if [ "${os}" != "Linux" ] && which docker-machine >/dev/null 2>&1; then
 	vm=$(docker-machine active 2> /dev/null || echo "default")
 	if ! docker-machine inspect "${vm}" &> /dev/null; then
 		if [ -z "$quiet" ]; then
@@ -84,7 +88,7 @@ if [ "${os}" != "Linux" ]; then
 		docker-machine -D create -d virtualbox --virtualbox-memory 2048 ${vm}
 	fi
 	docker-machine start ${vm} > /dev/null
-    eval $(docker-machine env $vm --shell=sh)
+	eval $(docker-machine env $vm --shell=sh)
 fi
 
 ip=$(docker-machine ip ${vm} 2> /dev/null || echo "localhost")
@@ -124,13 +128,23 @@ if [ -n "$port" ]; then
 	port_arg="-p $port:6080"
 fi
 
+if [ -n "$verbose" ]; then
+	echo docker run \
+		-d \
+		--name $container \
+		${mount_local} \
+		$port_arg \
+		$extra_run_args \
+		$image
+fi
+
 docker run \
-  -d \
-  --name $container \
-  ${mount_local} \
-  $port_arg \
-  $extra_run_args \
-  $image >/dev/null
+	-d \
+	--name $container \
+	${mount_local} \
+	$port_arg \
+	$extra_run_args \
+	$image >/dev/null
 
 print_app_output() {
 	docker cp $container:/var/log/supervisor/graphical-app-launcher.log - \
