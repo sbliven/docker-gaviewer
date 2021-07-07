@@ -4,6 +4,8 @@ GAviewer was written to explore geometric algebra visually and as a companion to
 the book 'Geometric Algebra for Computer Science' by Leo Durst, Daniel Fontijne
 and Stephen Mann. This provides a graphical docker container to run gaviewer.
 
+![GAviewer running in a browser](screenshot.png)
+
 Overview
 --------
 
