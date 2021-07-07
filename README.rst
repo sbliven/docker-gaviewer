@@ -24,6 +24,15 @@ script. It requires Docker.
 After starting the container, point your browser to the gaviewer process (e.g.
 http://localhost:6080/).
 
+GAviewer should automatically start (or run the `gaviewer` command). Book figures
+can be loaded with:
+
+1. 'File > Load .g directory' and select /home/user/Figures
+2. Type `FIG(1,1)` at the console
+
+If using run.sh, the host current working dir will be mounted at `/home/user/work`
+for saving scripts.
+
 Details
 --------
 
