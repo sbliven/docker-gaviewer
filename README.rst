@@ -1,7 +1,8 @@
 docker-gaviewer
 =============
-GAviewer was written by Leo Durst as a companion to the book 'Geometric Algebra
-for Computer Science.' This provides a docker container to run gaviewer.
+GAviewer was written to explore geometric algebra visually and as a companion to
+the book 'Geometric Algebra for Computer Science' by Leo Durst, Daniel Fontijne
+and Stephen Mann. This provides a graphical docker container to run gaviewer.
 
 Overview
 --------
@@ -9,14 +10,19 @@ Overview
 This Docker image is derived from
 [thewtex/opengl](https://github.com/thewtex/docker-opengl), which supports
 rendering OpenGL-based applications. An X session is
-running on display `:0` and can be viewed through HTML5 viewer on any device
+running on display `:0` and can be viewed through an HTML5 viewer on any device
 with a modern web browser (Mac OSX, Windows, Linux, Android, iOS, ChromeOS,
 ...).
 
 Quick-start
 -----------
 
-Execute the `run.sh` script.
+Download and execute the
+[`run.sh`](https://raw.githubusercontent.com/sbliven/docker-gaviewer/master/run.sh)
+script. It requires Docker.
+
+After starting the container, point your browser to the gaviewer process (e.g.
+http://localhost:6080/).
 
 Details
 --------
@@ -34,30 +40,30 @@ Xdummy session.
 The `run.sh` script can be used to drive start-up. It is customizable with
 flags::
 
-  Usage: run.sh [-h] [-q] [-c CONTAINER] [-i IMAGE] [-p PORT] [-r DOCKER_RUN_FLAGS]
+    Usage: run.sh [-h] [-q] [-c CONTAINER] [-i IMAGE] [-p PORT] [-r DOCKER_RUN_FLAGS]
 
-  This script is a convenience script to run Docker images based on
-  blivens/gaviewer. It:
+This script is a convenience script to run Docker images based on
+blivens/gaviewer. It:
 
-  - Makes sure docker is available
-  - On Windows and Mac OSX, creates a docker machine if required
-  - Informs the user of the URL to access the container with a web browser
-  - Stops and removes containers from previous runs to avoid conflicts
-  - Mounts the present working directory to /home/user/work on Linux and Mac OSX
-  - Includes figures from gaviewer in /home/user/Figures
-  - Starts gaviewer
-  - Exits with the same return code as gaviewer
+- Makes sure docker is available
+- On Windows and Mac OSX, creates a docker machine if required
+- Informs the user of the URL to access the container with a web browser
+- Stops and removes containers from previous runs to avoid conflicts
+- Mounts the present working directory to /home/user/work on Linux and Mac OSX
+- Includes figures from gaviewer in /home/user/Figures
+- Starts gaviewer
+- Exits with the same return code as gaviewer
 
-  Options:
+Options:
 
-    -h             Display this help and exit.
-    -c             Container name to use (default opengl).
-    -i             Image name (default thewtex/opengl).
-    -p             Port to expose HTTP server (default 6080). If an empty
-                   string, the port is not exposed.
-    -r             Extra arguments to pass to 'docker run'. E.g.
-                   --env="APP=glxgears"
-    -q             Do not output informational messages.
+    - `-h` Display this help and exit.
+    - `-c` Container name to use (default opengl).
+    - `-i` Image name (default thewtex/opengl).
+    - `-p` Port to expose HTTP server (default 6080). If an empty string, the
+      port is not exposed.
+    - `-r` Extra arguments to pass to 'docker run'. E.g. `--env="APP=glxgears"`
+    - `-q` Do not output informational messages.
+    - `-v` Print debugging information
 
 Running with docker
 -------------------
